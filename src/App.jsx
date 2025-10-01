@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-const API_URL = 'http://26.247.81.234:8080/pixel-battle/api/v1'
+const API_URL = import.meta.env.VITE_API_URL || 'https://pixel-battle.zebaro.dev/pixel-battle/api/v1'
 const CANVAS_SIZE = 1000
 const MIN_ZOOM = 1
 const MAX_ZOOM = 32

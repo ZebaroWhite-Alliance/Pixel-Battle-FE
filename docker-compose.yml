@@ -1,0 +1,18 @@
+services:
+  pixel-battle-fe:
+    build: .
+    image: ghcr.io/zebarowhite-alliance/pixel-battle-fe:latest
+    container_name: pixel-battle-fe
+    expose:
+      - "80"
+    restart: unless-stopped
+  pixel-battle-proxy:
+    image: nginx:1.27
+    container_name: pixel-battle-proxy
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "${SERVER_PORT}:80"
+    depends_on:
+      - pixel-battle-fe
+    restart: unless-stopped
