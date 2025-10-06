@@ -2,6 +2,7 @@
 import { useEffect, useRef } from "react"
 import { PixelCanvas } from "@/services/PixelCanvas"
 import {ApiClient} from "@/services/ApiClient";
+import {WebSocket} from "@/services/WebSocket";
 
 interface PixelCanvasProps {
     apiClient: ApiClient
@@ -19,6 +20,13 @@ export default function PixelCanvasComponent({ apiClient, selectedColor }: Pixel
 
         const el = canvas.getCanvasElement()
         containerRef.current?.appendChild(el)
+
+        const ws = new WebSocket('/topic/pixels')
+
+        ws.connect((data) => {
+            const { x, y, color } = data;
+            canvas.drawPixel(x, y, color)
+        })
 
         const handleResize = () => canvas.resize()
         const handleWheel = (e: WheelEvent) => canvas.handleZoom(e)
