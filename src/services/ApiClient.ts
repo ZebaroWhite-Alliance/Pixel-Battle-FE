@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://pixel-battle.zebaro.dev/pixel-battle/api/v1'
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://pixel-battle.zebaro.dev/api/v1'
 
 export class ApiClient {
     private accessToken: string | null = null
