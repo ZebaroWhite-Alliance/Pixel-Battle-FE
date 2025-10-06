@@ -4,7 +4,7 @@ services:
     image: ghcr.io/zebarowhite-alliance/pixel-battle-fe:latest
     container_name: pixel-battle-fe
     expose:
-      - "80"
+      - "3000"
     restart: unless-stopped
   pixel-battle-proxy:
     image: nginx:1.27
