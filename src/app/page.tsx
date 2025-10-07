@@ -1,10 +1,9 @@
 "use client"
-import {useApi} from "@/context/ApiContext"
-import {useRouter} from "next/navigation"
-import {useEffect, useState} from "react"
-import {ColorPalette} from "@/services/ColorPalette"
+import ColorPalette from "@/services/ColorPalette"
 import ColorPickerComponent from "@/components/ColorPickerComponent"
 import PixelCanvasComponent from "@/components/PixelCanvasComponent"
+import UserStatusComponent from "@/components/UserStatusComponent";
+import {useState} from "react";
 
 const COLOR_PALETTE = [
     "#FF0000", "#FFA500", "#FFFF00", "#00FF00",
@@ -14,18 +13,6 @@ const COLOR_PALETTE = [
 ]
 
 export default function Home() {
-    const router = useRouter()
-    const apiClient = useApi()
-
-    useEffect(() => {
-        (async () => {
-            if (!apiClient.getAccessToken()) return router.push("/login")
-
-            const session = await apiClient.session()
-            if (!session) router.push("/login")
-        })()
-    }, [apiClient, router])
-
     const [palette] = useState(() => new ColorPalette(COLOR_PALETTE))
     const [selectedColor, setSelectedColor] = useState(palette.getSelectedColor())
 
@@ -35,10 +22,8 @@ export default function Home() {
                 palette={palette}
                 onChange={setSelectedColor}
             />
-            <PixelCanvasComponent
-                apiClient={apiClient}
-                selectedColor={selectedColor}
-            />
+            <UserStatusComponent/>
+            <PixelCanvasComponent selectedColor={selectedColor}/>
         </div>
     )
 }

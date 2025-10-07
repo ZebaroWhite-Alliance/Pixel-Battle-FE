@@ -1,4 +1,4 @@
-export class ColorPalette {
+export default class ColorPalette {
     private colors: string[]
     private selectedIndex: number
 
