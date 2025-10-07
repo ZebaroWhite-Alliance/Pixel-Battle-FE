@@ -19,7 +19,8 @@ export default function PixelCanvasComponent({ apiClient, selectedColor }: Pixel
         pixelCanvasRef.current = canvas
 
         const el = canvas.getCanvasElement()
-        containerRef.current?.appendChild(el)
+        const container = containerRef.current
+        container?.appendChild(el)
 
         const ws = new WebSocket('/topic/pixels')
 
@@ -46,6 +47,10 @@ export default function PixelCanvasComponent({ apiClient, selectedColor }: Pixel
             el.removeEventListener("mousedown", handleMouseDown)
             window.removeEventListener("mousemove", handleMouseMove)
             window.removeEventListener("mouseup", handleMouseUp)
+
+            if (container && el.parentElement === container) container.removeChild(el)
+
+            ws.disconnect()
         }
     }, [apiClient])
 
@@ -56,8 +61,13 @@ export default function PixelCanvasComponent({ apiClient, selectedColor }: Pixel
 
         const handleClick = async (e: MouseEvent) => {
             const { x, y } = canvas.getCanvasCoordinates(e.clientX, e.clientY)
-            await apiClient.setPixel(x, y, selectedColor)
+            const prevColor = canvas.getPixel(x, y)
             canvas.drawPixel(x, y, selectedColor)
+            try {
+                await apiClient.setPixel(x, y, selectedColor)
+            } catch {
+                canvas.drawPixel(x, y, prevColor)
+            }
         }
 
         container.addEventListener("click", handleClick)
