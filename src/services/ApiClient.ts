@@ -30,12 +30,12 @@ export class ApiClient {
             headers.set('Authorization', `Bearer ${this.accessToken}`)
         }
         console.log(options)
-        const res = await fetch(`${API_URL}${url}`, { ...options, headers })
+        const res = await fetch(`${API_URL}${url}`, {headers, ...options})
 
         if (res.status === 401 && retry) {
             const refreshed = await this.refreshToken()
             if (refreshed) {
-                return this.request(url, options, false) // повторяем запрос с новым токеном
+                return this.request(url, options, false)
             }
         }
 
@@ -44,7 +44,7 @@ export class ApiClient {
         try {
             data = text ? JSON.parse(text) : {}
         } catch {
-            data = { message: text }
+            data = {message: text}
         }
 
         if (!res.ok) throw new Error(data?.message || `Ошибка запроса ${res.status}`)
@@ -56,7 +56,7 @@ export class ApiClient {
         try {
             const res = await fetch(`${API_URL}/auth/refresh`, {
                 method: 'POST',
-                credentials: 'include' // чтобы отправить cookie
+                credentials: 'include'
             })
             if (!res.ok) return false
 
@@ -71,7 +71,7 @@ export class ApiClient {
     async login(username: string, password: string) {
         const data = await this.request('/auth/login', {
             method: 'POST',
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify({username, password}),
             credentials: 'include'
         })
         this.setAccessToken(data.token)
@@ -81,10 +81,19 @@ export class ApiClient {
     async register(username: string, password: string) {
         const data = await this.request('/auth/register', {
             method: 'POST',
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify({username, password}),
             credentials: 'include'
         })
         this.setAccessToken(data.token)
+        return data
+    }
+
+    async logout() {
+        const data = await this.request('/auth/logout', {
+            method: 'POST',
+            credentials: 'include'
+        })
+        this.setAccessToken("")
         return data
     }
 
@@ -106,7 +115,7 @@ export class ApiClient {
     async setPixel(x: number, y: number, color: string) {
         return this.request('/pixel/change', {
             method: 'POST',
-            body: JSON.stringify({ x, y, color })
+            body: JSON.stringify({x, y, color})
         })
     }
 }
