@@ -1,64 +1,60 @@
 'use client'
-import { useState, useCallback, FormEvent } from 'react'
+import {useState, useCallback, FormEvent, ChangeEvent} from 'react'
 import {useApi} from "@/context/ApiContext";
 import {useRouter} from "next/navigation";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
+import ErrorField from "@/components/ui/ErrorField";
+import FormContainer from "@/components/ui/FormContainer";
+import useForm from "@/hooks/useForm";
 
 
 export default function LoginPage() {
     const apiClient = useApi()
     const router = useRouter()
 
-    const [loginData, setLoginData] = useState({ username: '', password: '' })
+    const {values: loginData, handleChange} = useForm({username: '', password: ''})
     const [authError, setAuthError] = useState('')
+
+    const handleFieldChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        setAuthError('')
+        handleChange(e)
+    }, [handleChange])
 
     const handleLogin = useCallback(async (e: FormEvent) => {
         e.preventDefault()
         try {
             await apiClient.login(loginData.username, loginData.password)
-            setAuthError('')
             router.push('/')
-        } catch {
-            setAuthError('Неверные учетные данные')
+        } catch (err: any) {
+            setAuthError(err.message || 'Unknown error')
         }
+
     }, [apiClient, loginData, router])
 
     return (
-        <div className="flex items-center justify-center min-h-screen">
-            <form
-                onSubmit={handleLogin}
-                className="bg-white bg-opacity-90 backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 flex flex-col animate-fadeIn"
-            >
-                <h2 className="text-3xl font-extrabold mb-6 text-center text-gray-800">
-                    Welcome Back
-                </h2>
+        <FormContainer title="Welcome Back" onSubmit={handleLogin}>
+            <Input
+                type="text"
+                label="Username"
+                name="username"
+                placeholder="Enter your username"
+                onChange={handleFieldChange}
+            />
 
-                <input
-                    type="text"
-                    placeholder="Имя пользователя"
-                    value={loginData.username}
-                    onChange={e => setLoginData(prev => ({ ...prev, username: e.target.value }))}
-                    className="mb-4 px-4 py-3 border border-gray-300 rounded-lg bg-white bg-opacity-80 text-gray-900 placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                />
+            <Input
+                type="password"
+                label="Password"
+                name="password"
+                placeholder="Enter your password"
+                onChange={handleFieldChange}
+            />
 
-                <input
-                    type="password"
-                    placeholder="Пароль"
-                    value={loginData.password}
-                    onChange={e => setLoginData(prev => ({ ...prev, password: e.target.value }))}
-                    className="mb-4 px-4 py-3 border border-gray-300 rounded-lg bg-white bg-opacity-80 text-gray-900 placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                />
+            <Button type="submit">
+                Log in
+            </Button>
 
-                <button
-                    type="submit"
-                    className="mb-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transform transition"
-                >
-                    Войти
-                </button>
-
-                {authError && (
-                    <p className="text-red-500 mt-2 text-center font-medium">{authError}</p>
-                )}
-            </form>
-        </div>
+            <ErrorField message={authError} className="text-center"/>
+        </FormContainer>
     )
 }

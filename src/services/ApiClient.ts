@@ -39,14 +39,17 @@ export class ApiClient {
             }
         }
 
-        if (!res.ok) throw new Error(`Ошибка запроса ${res.status}`)
-
         const text = await res.text()
-        if (!text){
-            return {}
+        let data
+        try {
+            data = text ? JSON.parse(text) : {}
+        } catch {
+            data = { message: text }
         }
 
-        return JSON.parse(text)
+        if (!res.ok) throw new Error(data?.message || `Ошибка запроса ${res.status}`)
+
+        return data
     }
 
     private async refreshToken(): Promise<boolean> {
