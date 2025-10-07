@@ -1,15 +1,15 @@
 "use client"
 import { useEffect, useRef } from "react"
 import { PixelCanvas } from "@/services/PixelCanvas"
-import {ApiClient} from "@/services/ApiClient";
 import {WebSocket} from "@/services/WebSocket";
+import {useApi} from "@/context/ApiContext";
 
 interface PixelCanvasProps {
-    apiClient: ApiClient
     selectedColor: string
 }
 
-export default function PixelCanvasComponent({ apiClient, selectedColor }: PixelCanvasProps) {
+export default function PixelCanvasComponent({ selectedColor }: PixelCanvasProps) {
+    const apiClient = useApi()
     const containerRef = useRef<HTMLDivElement>(null)
     const pixelCanvasRef = useRef<PixelCanvas | null>(null)
 
