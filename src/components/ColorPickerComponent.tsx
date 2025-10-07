@@ -1,4 +1,4 @@
-import {ColorPalette} from '@/services/ColorPalette'
+import ColorPalette from '@/services/ColorPalette'
 
 interface ColorPickerProps {
     palette: ColorPalette
