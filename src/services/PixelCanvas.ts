@@ -63,6 +63,15 @@ export class PixelCanvas {
         return this.mainCanvas
     }
 
+    getPixel(x: number, y: number): string {
+        if (x < 0 || y < 0 || x >= this.canvasSize || y >= this.canvasSize) return "#FFFFFF"
+        const key = `${x}-${y}`
+        if (this.pixelsCache.has(key)) {
+            return this.bufferCtx.getImageData(x, y, 1, 1).data.toString()
+        }
+        return "#FFFFFF"
+    }
+
     drawPixel(x: number, y: number, color: string) {
         if (x < 0 || y < 0 || x >= this.canvasSize || y >= this.canvasSize) return
         const key = `${x}-${y}`

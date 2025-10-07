@@ -61,8 +61,13 @@ export default function PixelCanvasComponent({ apiClient, selectedColor }: Pixel
 
         const handleClick = async (e: MouseEvent) => {
             const { x, y } = canvas.getCanvasCoordinates(e.clientX, e.clientY)
-            await apiClient.setPixel(x, y, selectedColor)
+            const prevColor = canvas.getPixel(x, y)
             canvas.drawPixel(x, y, selectedColor)
+            try {
+                await apiClient.setPixel(x, y, selectedColor)
+            } catch {
+                canvas.drawPixel(x, y, prevColor)
+            }
         }
 
         container.addEventListener("click", handleClick)
