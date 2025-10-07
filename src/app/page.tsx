@@ -7,10 +7,10 @@ import ColorPickerComponent from "@/components/ColorPickerComponent"
 import PixelCanvasComponent from "@/components/PixelCanvasComponent"
 
 const COLOR_PALETTE = [
-    '#FFFFFF', '#000000', '#E53935', '#D81B60',
-    '#8E24AA', '#5E35B1', '#3949AB', '#1E88E5',
-    '#039BE5', '#00ACC1', '#00897B', '#43A047',
-    '#FDD835', '#FB8C00', '#F4511E', '#6D4C41'
+    "#FF0000", "#FFA500", "#FFFF00", "#00FF00",
+    "#006400", "#00FFFF", "#00BFFF", "#0000FF",
+    "#7B68EE", "#FF00FF", "#800080", "#FFFFFF",
+    "#6A6A6A", "#3F3F3F", "#000000",
 ]
 
 export default function Home() {
