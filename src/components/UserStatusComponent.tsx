@@ -1,11 +1,13 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useApi } from '@/context/ApiContext'
 import Button from '@/components/ui/Button'
+import Panel from "@/components/ui/Panel";
+import Heading from "@/components/ui/Heading";
+import {useServices} from "@/context/ServicesContext";
 
 export default function UserStatusComponent() {
-    const apiClient = useApi()
+    const {apiClient} = useServices()
     const router = useRouter()
     const [username, setUsername] = useState<string | null>(null)
     const [loading, setLoading] = useState(true)
@@ -43,26 +45,20 @@ export default function UserStatusComponent() {
     }
 
     return (
-        <div className="fixed top-4 right-4 bg-white bg-opacity-80 backdrop-blur-md shadow-md rounded-xl px-4 py-2 flex items-center gap-3 z-50">
+        <Panel className="fixed items-center top-5 right-5 z-50">
             {loading ? (
-                <span className="text-gray-600 text-sm">Loading...</span>
+                <Heading>Loading...</Heading>
             ) : username ? (
                 <>
-                    <span className="font-semibold text-gray-800">{username}</span>
-                    <Button onClick={handleLogout} className="text-sm py-1 px-3">
-                        Logout
-                    </Button>
+                    <Heading>{username}</Heading>
+                    <Button onClick={handleLogout}>Logout</Button>
                 </>
             ) : (
                 <>
-                    <Button onClick={() => router.push('/login')} className="text-sm py-1 px-3">
-                        Login
-                    </Button>
-                    <Button onClick={() => router.push('/register')} className="text-sm py-1 px-3">
-                        Register
-                    </Button>
+                    <Button onClick={() => router.push('/login')}>Login</Button>
+                    <Button onClick={() => router.push('/register')}>Register</Button>
                 </>
             )}
-        </div>
+        </Panel>
     )
 }

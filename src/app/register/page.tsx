@@ -1,18 +1,18 @@
 'use client'
-import { useState, useCallback, FormEvent, ChangeEvent } from 'react'
-import { useApi } from "@/context/ApiContext";
-import { useRouter } from "next/navigation";
+import {useState, useCallback, FormEvent, ChangeEvent} from 'react'
+import {useRouter} from "next/navigation";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import ErrorField from "@/components/ui/ErrorField";
 import FormContainer from "@/components/ui/FormContainer";
 import useForm from "@/hooks/useForm";
+import {useServices} from "@/context/ServicesContext";
 
 export default function RegistrationPage() {
-    const apiClient = useApi()
+    const {apiClient} = useServices()
     const router = useRouter()
 
-    const { values: regData, handleChange } = useForm({ username: '', password: '', confirmPassword: '' })
+    const {values: regData, handleChange} = useForm({username: '', password: '', confirmPassword: ''})
     const [errorMessage, setErrorMessage] = useState('')
 
     const handleFieldChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -30,8 +30,8 @@ export default function RegistrationPage() {
 
         try {
             await apiClient.register(regData.username, regData.password)
-            router.push('/login') // после регистрации редирект на логин
-        } catch (err: any){
+            router.push('/login')
+        } catch (err: any) {
             setErrorMessage(err.message || 'Unknown error')
         }
     }, [apiClient, regData, router])

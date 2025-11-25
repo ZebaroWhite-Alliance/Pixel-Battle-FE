@@ -1,64 +1,34 @@
-import ColorPalette from '@/services/ColorPalette'
+"use client"
+import Panel from "@/components/ui/Panel";
+import BackgroundPanel from "@/components/ui/BackgroundPanel";
+import Heading from "@/components/ui/Heading";
+import Button from "@/components/ui/Button";
+import {useServices} from "@/context/ServicesContext";
+import useEmitter from "@/hooks/useEmitter";
 
-interface ColorPickerProps {
-    palette: ColorPalette
-    onChange: (color: string) => void
-}
+export default function ColorPickerComponent() {
+    const {colorPalette} = useServices()
+    useEmitter(colorPalette.events, "change");
 
-export default function ColorPickerComponent({palette, onChange}: ColorPickerProps) {
-    const colors = palette.getAllColors()
-    const selectedIndex = palette.getSelectedIndex()
+    const colors = colorPalette.getAllColors()
+    const selectedIndex = colorPalette.getSelectedIndex()
 
     return (
-        <div
-            style={{
-                position: 'fixed',
-                top: 20,
-                left: 20,
-                backgroundColor: '#fff',
-                borderRadius: 12,
-                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-                padding: 16,
-                zIndex: 1000,
-                userSelect: 'none',
-                border: '1px solid rgba(0, 0, 0, 0.1)',
-            }}
-        >
-            <h2 style={{margin: '0 0 12px', fontSize: 16}}>Выберите цвет</h2>
-            <div
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: `repeat(4, 36px)`,
-                    gap: 8,
-                    padding: 8,
-                    borderRadius: 10,
-                    border: '1px solid rgba(0, 0, 0, 0.1)',
-                    backgroundColor: '#fafafa',
-                }}
-            >
+        <Panel className="fixed flex-col top-5 left-5 z-50">
+            <Heading>Выберите цвет</Heading>
+            <BackgroundPanel className="grid grid-cols-4 gap-2 p-2">
                 {colors.map((color, index) => (
-                    <button
+                    <Button
                         key={color}
-                        onClick={() => {
-                            palette.selectColorByIndex(index)
-                            onChange(color)
-                        }}
-                        style={{
-                            width: 36,
-                            height: 36,
-                            borderRadius: 6,
-                            border: index === selectedIndex
-                                ? '2px solid #000'
-                                : '2px solid transparent',
-                            backgroundColor: color,
-                            cursor: 'pointer',
-                            transform: index === selectedIndex ? 'scale(1.1)' : 'scale(1)',
-                            transition: 'all 0.1s',
-                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.15)',
-                        }}
+                        onClick={() => colorPalette.selectColorByIndex(index)}
+                        className={`
+                            w-9 h-9 !rounded-sm
+                            ${index === selectedIndex ? 'ring-2 ring-black scale-105' : ''}
+                        `}
+                        color={color}
                     />
                 ))}
-            </div>
-        </div>
+            </BackgroundPanel>
+        </Panel>
     )
 }

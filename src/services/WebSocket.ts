@@ -1,26 +1,25 @@
 import { Client, IMessage } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'https://pixel-battle.zebaro.dev/ws';
+export default class WebSocket {
+    WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'https://pixel-battle.zebaro.dev/ws';
 
-export class WebSocket {
     private client: Client;
     private connected = false;
-    private url = WS_URL;
     private messageCallback?: (data: any) => void;
 
     constructor(private topic: string, callback?: (data: any) => void) {
         this.messageCallback = callback;
 
         this.client = new Client({
-            webSocketFactory: () => new SockJS(this.url),
+            webSocketFactory: () => new SockJS(this.WS_URL),
             reconnectDelay: 5000,
             debug: (str) => console.log('[STOMP DEBUG]', str),
         });
 
         this.client.onConnect = () => {
             this.connected = true;
-            console.log('[WebSocket] ✅ Connected to', this.url);
+            console.log('[WebSocket] ✅ Connected to', this.WS_URL);
             this.subscribe();
         };
 
