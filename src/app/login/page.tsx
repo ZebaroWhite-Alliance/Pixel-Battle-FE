@@ -1,16 +1,16 @@
 'use client'
 import {useState, useCallback, FormEvent, ChangeEvent} from 'react'
-import {useApi} from "@/context/ApiContext";
 import {useRouter} from "next/navigation";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import ErrorField from "@/components/ui/ErrorField";
 import FormContainer from "@/components/ui/FormContainer";
 import useForm from "@/hooks/useForm";
+import {useServices} from "@/context/ServicesContext";
 
 
 export default function LoginPage() {
-    const apiClient = useApi()
+    const {apiClient} = useServices()
     const router = useRouter()
 
     const {values: loginData, handleChange} = useForm({username: '', password: ''})

@@ -1,6 +1,9 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://pixel-battle.zebaro.dev/api/v1'
+import TemplateItem from "@/services/TemplateItem";
+import Pixel from "@/types/Pixel";
 
-export class ApiClient {
+export default class ApiClient {
+    static API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://pixel-battle.zebaro.dev/api/v1'
+
     private accessToken: string | null = null
 
     constructor(accessToken?: string) {
@@ -29,8 +32,8 @@ export class ApiClient {
         if (this.accessToken) {
             headers.set('Authorization', `Bearer ${this.accessToken}`)
         }
-        console.log(options)
-        const res = await fetch(`${API_URL}${url}`, {headers, ...options})
+
+        const res = await fetch(`${ApiClient.API_URL}${url}`, {headers, ...options})
 
         if (res.status === 401 && retry) {
             const refreshed = await this.refreshToken()
@@ -54,7 +57,7 @@ export class ApiClient {
 
     private async refreshToken(): Promise<boolean> {
         try {
-            const res = await fetch(`${API_URL}/auth/refresh`, {
+            const res = await fetch(`${ApiClient.API_URL}/auth/refresh`, {
                 method: 'POST',
                 credentials: 'include'
             })
@@ -108,14 +111,26 @@ export class ApiClient {
         }
     }
 
-    async fetchPixels() {
-        return this.request('/pixel')
+    async fetchPixels(): Promise<Pixel[]   > {
+        return this.request('/pixels')
     }
 
     async setPixel(x: number, y: number, color: string) {
-        return this.request('/pixel/change', {
+        return this.request('/pixels', {
             method: 'POST',
             body: JSON.stringify({x, y, color})
+        })
+    }
+
+    async fetchTemplates(): Promise<{ id: string; name: string; pixels: Pixel[] }[]> {
+        return this.request('/templates')
+    }
+
+    async sendTemplate(template: TemplateItem) {
+        const {name, pixels} = template
+        return this.request('/templates', {
+            method: 'POST',
+            body: JSON.stringify({name, pixels})
         })
     }
 }

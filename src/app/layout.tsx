@@ -2,7 +2,7 @@ import type {Metadata} from "next";
 import {Geist, Geist_Mono} from "next/font/google";
 import {ReactNode} from "react";
 
-import {ApiProvider} from "@/context/ApiContext";
+import {ServicesProvider} from "@/context/ServicesContext";
 
 import "./globals.css";
 
@@ -40,9 +40,9 @@ export default function RootLayout({children,}: Readonly<{ children: ReactNode; 
         <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gradient-to-tr from-blue-400 to-purple-500`}
         >
-        <ApiProvider>
+        <ServicesProvider>
             {children}
-        </ApiProvider>
+        </ServicesProvider>
         </body>
         </html>
     );

@@ -1,13 +1,18 @@
+"use client"
+
 import ViewState from "@/services/canvas/ViewState";
 
 import LayerComposer from "@/services/canvas/layers/LayerComposer";
 import PixelLayer from "@/services/canvas/layers/PixelLayer";
 import GridLayer from "@/services/canvas/layers/GridLayer";
+import TemplateLayer from "@/services/canvas/layers/TemplateLayer";
+import TemplateManager from "@/services/TemplateManager";
 
 
 export interface PixelCanvasOptions {
     width: number,
     height: number,
+    templateManager: TemplateManager
 }
 
 export default class PixelCanvas {
@@ -16,6 +21,7 @@ export default class PixelCanvas {
 
     private readonly pixelLayer: PixelLayer
     private readonly gridLayer: GridLayer
+    private readonly templateLayer: TemplateLayer
 
 
     constructor(options: PixelCanvasOptions) {
@@ -27,11 +33,32 @@ export default class PixelCanvas {
 
         this.pixelLayer = new PixelLayer(options.width, options.height)
         this.gridLayer = new GridLayer(options.width, options.height)
+        this.templateLayer = new TemplateLayer(options.width, options.height, options.templateManager)
 
         this.mainLayer.addLayer(this.pixelLayer)
         this.mainLayer.addLayer(this.gridLayer)
+        this.mainLayer.addLayer(this.templateLayer)
 
-        this.initEvents()
+        // const img = new Image()
+        // img.src = 'https://images.vexels.com/media/users/3/354131/isolated/preview/4fe7858f34cdd0cdba3ff384b80d246d-pixel-art-red-heart.png'
+        // img.crossOrigin = "anonymous";
+        // img.onload = () => {
+        //     console.log('Картинка загружена')
+        //     this.templateLayer.addImage(img)
+        //     this.templateLayer.resizeActiveTemplate(16, 16)
+        //     this.templateLayer.getActiveTemplate()!.x = 10
+        //     this.templateLayer.getActiveTemplate()!.y = 10
+        //     this.templateLayer.applyActiveTemplate()
+        //     this.templateLayer.draw()
+        //
+        //     // console.log(this.templateLayer.getActiveTemplate()?.pixels)
+        //     this.draw()
+        // }
+
+        options.templateManager.events.on('change', () => {
+            this.templateLayer.draw()
+            this.draw()
+        });
     }
 
     get canvas() {
@@ -66,7 +93,7 @@ export default class PixelCanvas {
     }
 
     //region <--- Event Handlers --->
-    private initEvents() {
+    initEvents() {
         window.addEventListener("resize", this.handleResize)
         this.mainLayer.canvas.addEventListener("wheel", this.handleWheel, {passive: false})
         this.mainLayer.canvas.addEventListener("mousedown", this.handleMouseDownBound)
@@ -115,23 +142,37 @@ export default class PixelCanvas {
     handleMouseDownBound = (e: MouseEvent) => {
         const logicalPos = this.getCanvasCoordinates(e.clientX, e.clientY);
 
-        if (e.button == 2)
+        if (e.button === 0) { // Левая кнопка - шаблоны
+            if (this.templateLayer.pointerDown(logicalPos.x, logicalPos.y)) {
+                e.preventDefault();
+                return;
+            }
+            // Здесь можно добавить логику рисования пикселей
+        } else if (e.button == 2)
             this.viewState.startDrag(e.clientX, e.clientY)
     }
 
     handleMouseMoveBound = (e: MouseEvent) => {
         const logicalPos = this.getCanvasCoordinates(e.clientX, e.clientY);
 
-        if (this.viewState.dragging) {
+        this.canvas.style.cursor = this.templateLayer.getCursor(logicalPos.x, logicalPos.y);
+
+        if (this.templateLayer.isInteracting()) {
+            this.templateLayer.pointerMove(logicalPos.x, logicalPos.y);
+            this.draw();
+        } else if (this.viewState.dragging) {
             this.viewState.updateDrag(e.clientX, e.clientY)
             this.draw()
         }
     }
 
     handleMouseUpBound = (e: MouseEvent) => {
-        if (e.button == 2)
+        if (e.button === 0) {
+            this.templateLayer.pointerUp();
+        } else if (e.button == 2)
             this.viewState.stopDrag()
     }
+
     //endregion
 
     destroy() {

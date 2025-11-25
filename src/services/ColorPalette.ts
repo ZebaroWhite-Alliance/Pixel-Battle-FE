@@ -1,8 +1,20 @@
-export default class ColorPalette {
-    private colors: string[]
-    private selectedIndex: number
+import EventEmitter from "@/utils/EventEmitter";
 
-    constructor(colors: string[], defaultIndex = 0) {
+export default class ColorPalette {
+    static COLOR_PALETTE = [
+        "#FF0000", "#FFA500", "#FFFF00", "#00FF00",
+        "#006400", "#00FFFF", "#00BFFF", "#0000FF",
+        "#7B68EE", "#FF00FF", "#800080", "#FFFFFF",
+        "#6A6A6A", "#3F3F3F", "#000000",
+    ]
+
+    private readonly colors: string[]
+    private selectedIndex: number
+    public events = new EventEmitter<{
+        change: void
+    }>();
+
+    constructor(colors = ColorPalette.COLOR_PALETTE, defaultIndex = 0) {
         this.colors = colors
         this.selectedIndex = defaultIndex
     }
@@ -18,6 +30,7 @@ export default class ColorPalette {
     selectColorByIndex(index: number) {
         if (index >= 0 && index < this.colors.length) {
             this.selectedIndex = index
+            this.events.emit("change", undefined)
         }
     }
 
