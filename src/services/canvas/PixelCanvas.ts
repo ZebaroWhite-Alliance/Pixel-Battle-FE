@@ -39,22 +39,6 @@ export default class PixelCanvas {
         this.mainLayer.addLayer(this.gridLayer)
         this.mainLayer.addLayer(this.templateLayer)
 
-        // const img = new Image()
-        // img.src = 'https://images.vexels.com/media/users/3/354131/isolated/preview/4fe7858f34cdd0cdba3ff384b80d246d-pixel-art-red-heart.png'
-        // img.crossOrigin = "anonymous";
-        // img.onload = () => {
-        //     console.log('Картинка загружена')
-        //     this.templateLayer.addImage(img)
-        //     this.templateLayer.resizeActiveTemplate(16, 16)
-        //     this.templateLayer.getActiveTemplate()!.x = 10
-        //     this.templateLayer.getActiveTemplate()!.y = 10
-        //     this.templateLayer.applyActiveTemplate()
-        //     this.templateLayer.draw()
-        //
-        //     // console.log(this.templateLayer.getActiveTemplate()?.pixels)
-        //     this.draw()
-        // }
-
         options.templateManager.events.on('change', () => {
             this.templateLayer.draw()
             this.draw()
