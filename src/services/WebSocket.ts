@@ -7,6 +7,7 @@ export default class WebSocket {
     private client: Client;
     private connected = false;
     private messageCallback?: (data: any) => void;
+    private isDev = process.env.NODE_ENV === 'development';
 
     constructor(private topic: string, callback?: (data: any) => void) {
         this.messageCallback = callback;
@@ -14,18 +15,20 @@ export default class WebSocket {
         this.client = new Client({
             webSocketFactory: () => new SockJS(this.WS_URL),
             reconnectDelay: 5000,
-            debug: (str) => console.log('[STOMP DEBUG]', str),
+            debug: (str: string) => {
+                if (this.isDev) console.log('[STOMP DEBUG]', str);
+            },
         });
 
         this.client.onConnect = () => {
             this.connected = true;
-            console.log('[WebSocket] ✅ Connected to', this.WS_URL);
+            if (this.isDev) console.log('[WebSocket] Connected to', this.WS_URL);
             this.subscribe();
         };
 
         this.client.onDisconnect = () => {
             this.connected = false;
-            console.log('[WebSocket] ❌ Disconnected');
+            if (this.isDev) console.log('[WebSocket] Disconnected');
         };
 
         this.client.onStompError = (frame) => {
@@ -35,19 +38,12 @@ export default class WebSocket {
     }
 
     connect(callback?: (data: any) => void) {
-        if (callback) {
-            this.messageCallback = callback;
-        }
-
-        if (!this.connected) {
-            console.log('[WebSocket] Connecting...');
-            this.client.activate();
-        }
+        if (callback) this.messageCallback = callback;
+        if (!this.connected) this.client.activate();
     }
 
     disconnect() {
         if (this.connected) {
-            console.log('[WebSocket] Disconnecting...');
             this.client.deactivate();
             this.connected = false;
         }
@@ -56,7 +52,6 @@ export default class WebSocket {
     private subscribe() {
         if (!this.client.connected) return;
 
-        console.log(`[WebSocket] Subscribing to topic: ${this.topic}`);
         this.client.subscribe(this.topic, (message: IMessage) => {
             let data;
             try {
@@ -65,11 +60,9 @@ export default class WebSocket {
                 data = message.body;
             }
 
-            console.log('[WebSocket] Received:', data);
+            if (this.isDev) console.log('[WebSocket] Received:', data);
 
-            if (this.messageCallback) {
-                this.messageCallback(data);
-            }
+            this.messageCallback?.(data);
         });
     }
 }
