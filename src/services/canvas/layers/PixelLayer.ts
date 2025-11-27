@@ -12,8 +12,8 @@ export default class PixelLayer extends Layer {
     }
 
     drawPixel(x: number, y: number, color: string) {
+        if (x < 0 || y < 0 || x >= this.width || y >= this.height) return
         const key = `${x}-${y}`
-        if (this.pixelsCache.has(key)) return
         this.bufferCtx.fillStyle = color
         this.bufferCtx.fillRect(x, y, 1, 1)
         this.pixelsCache.add(key)
