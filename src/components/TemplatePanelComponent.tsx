@@ -43,14 +43,14 @@ export default function TemplatePanelComponent() {
                     <Text>{t.name}</Text>
                     {isAwaiting && (
                         <Text className="!text-gray-500 italic text-xs">
-                            (Ожидает размещения)
+                            (Awaiting placement)
                         </Text>
                     )}
                 </div>
 
                 {isAwaiting ? (
                     <Button onClick={() => handleConfirmPlacement()}>
-                        Подтвердить
+                        Confirm
                     </Button>
                 ) : (
                     <Checkbox
@@ -67,21 +67,21 @@ export default function TemplatePanelComponent() {
             <Panel className="fixed flex-col top-25 right-5 z-50">
                 <div className="flex items-center justify-between gap-2 mb-2">
                     <Heading>Templates</Heading>
-                    <Button onClick={() => setModalOpen(true)}>Добавить</Button>
+                    <Button onClick={() => setModalOpen(true)}>Add</Button>
                 </div>
 
                 <Select<"own" | "team">
                     value={mode}
                     onChange={setMode}
                     options={[
-                        { label: "Свои", value: "own" },
-                        // { label: "Командные", value: "team" },
+                        { label: "Own", value: "own" },
+                        // { label: "Team", value: "team" },
                     ]}
                 />
 
                 <BackgroundPanel>
                     {templateManager.getTemplates().length === 0 ? (
-                        <Text>Нет шаблонов</Text>
+                        <Text>No templates</Text>
                     ) : (
                         templateManager.getTemplates().map(renderTemplate)
                     )}

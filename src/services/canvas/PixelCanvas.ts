@@ -126,12 +126,12 @@ export default class PixelCanvas {
     handleMouseDownBound = (e: MouseEvent) => {
         const logicalPos = this.getCanvasCoordinates(e.clientX, e.clientY);
 
-        if (e.button === 0) { // Левая кнопка - шаблоны
+        if (e.button === 0) { // Left button - templates
             if (this.templateLayer.pointerDown(logicalPos.x, logicalPos.y)) {
                 e.preventDefault();
                 return;
             }
-            // Здесь можно добавить логику рисования пикселей
+            // Here you can add the logic for drawing pixels
         } else if (e.button == 2)
             this.viewState.startDrag(e.clientX, e.clientY)
     }

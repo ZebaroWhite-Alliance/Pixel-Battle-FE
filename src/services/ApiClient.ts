@@ -22,7 +22,7 @@ export default class ApiClient {
         return this.accessToken
     }
 
-    private async request(url: string, options: RequestInit = {}, retry = true): Promise<any> { // TODO: Убрать any
+    private async request(url: string, options: RequestInit = {}, retry = true): Promise<any> { // TODO: Remove any
         const headers = new Headers()
         headers.set('Content-Type', 'application/json')
         if (options.headers instanceof Headers) {
@@ -50,7 +50,7 @@ export default class ApiClient {
             data = {message: text}
         }
 
-        if (!res.ok) throw new Error(data?.message || `Ошибка запроса ${res.status}`)
+        if (!res.ok) throw new Error(data?.message || `Request error ${res.status}`)
 
         return data
     }

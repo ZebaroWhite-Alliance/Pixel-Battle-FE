@@ -15,7 +15,7 @@ export default function ColorPickerComponent() {
 
     return (
         <Panel className="fixed flex-col top-5 left-5 z-50">
-            <Heading>Выберите цвет</Heading>
+            <Heading>Select colour</Heading>
             <BackgroundPanel className="grid grid-cols-4 gap-2 p-2">
                 {colors.map((color, index) => (
                     <Button
