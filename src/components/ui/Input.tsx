@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState} from 'react'
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -24,5 +24,5 @@ export default function Input({label, error, className = '', value, onChange, ..
             />
             {error && <span className="text-red-500 text-xs">{error}</span>}
         </div>
-    );
-};
+    )
+}

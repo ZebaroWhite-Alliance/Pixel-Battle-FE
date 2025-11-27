@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 type OptionProps = React.OptionHTMLAttributes<HTMLOptionElement>
 
@@ -10,5 +10,5 @@ export default function Option({ children, ...props }: OptionProps) {
         >
             {children}
         </option>
-    );
+    )
 }

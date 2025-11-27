@@ -1,4 +1,4 @@
-import {FormEvent, ReactNode} from "react";
+import {FormEvent, ReactNode} from "react"
 
 interface FormContainerProps {
     title: string;
@@ -18,5 +18,5 @@ export default function FormContainer({title, children, onSubmit, className = ""
                 {children}
             </form>
         </div>
-    );
+    )
 }

@@ -1,12 +1,10 @@
 "use client"
-
-import ViewState from "@/services/canvas/ViewState";
-
-import LayerComposer from "@/services/canvas/layers/LayerComposer";
-import PixelLayer from "@/services/canvas/layers/PixelLayer";
-import GridLayer from "@/services/canvas/layers/GridLayer";
-import TemplateLayer from "@/services/canvas/layers/TemplateLayer";
-import TemplateManager from "@/services/TemplateManager";
+import GridLayer from "@/services/canvas/layers/GridLayer"
+import LayerComposer from "@/services/canvas/layers/LayerComposer"
+import PixelLayer from "@/services/canvas/layers/PixelLayer"
+import TemplateLayer from "@/services/canvas/layers/TemplateLayer"
+import ViewState from "@/services/canvas/ViewState"
+import TemplateManager from "@/services/TemplateManager"
 
 
 export interface PixelCanvasOptions {
@@ -42,7 +40,7 @@ export default class PixelCanvas {
         options.templateManager.events.on('change', () => {
             this.templateLayer.draw()
             this.draw()
-        });
+        })
     }
 
     get canvas() {
@@ -107,12 +105,12 @@ export default class PixelCanvas {
     handleWheel = (e: WheelEvent) => {
         e.preventDefault()
 
-        const rect = this.mainLayer.canvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
+        const rect = this.mainLayer.canvas.getBoundingClientRect()
+        const mouseX = e.clientX - rect.left
+        const mouseY = e.clientY - rect.top
 
-        const zoomDelta = e.deltaY > 0 ? -1 : 1;
-        this.viewState.zoom(zoomDelta, mouseX, mouseY);
+        const zoomDelta = e.deltaY > 0 ? -1 : 1
+        this.viewState.zoom(zoomDelta, mouseX, mouseY)
 
         this.draw()
     }
@@ -124,12 +122,12 @@ export default class PixelCanvas {
     }
 
     handleMouseDownBound = (e: MouseEvent) => {
-        const logicalPos = this.getCanvasCoordinates(e.clientX, e.clientY);
+        const logicalPos = this.getCanvasCoordinates(e.clientX, e.clientY)
 
         if (e.button === 0) { // Left button - templates
             if (this.templateLayer.pointerDown(logicalPos.x, logicalPos.y)) {
-                e.preventDefault();
-                return;
+                e.preventDefault()
+                return
             }
             // Here you can add the logic for drawing pixels
         } else if (e.button == 2)
@@ -137,13 +135,13 @@ export default class PixelCanvas {
     }
 
     handleMouseMoveBound = (e: MouseEvent) => {
-        const logicalPos = this.getCanvasCoordinates(e.clientX, e.clientY);
+        const logicalPos = this.getCanvasCoordinates(e.clientX, e.clientY)
 
-        this.canvas.style.cursor = this.templateLayer.getCursor(logicalPos.x, logicalPos.y);
+        this.canvas.style.cursor = this.templateLayer.getCursor(logicalPos.x, logicalPos.y)
 
         if (this.templateLayer.isInteracting()) {
-            this.templateLayer.pointerMove(logicalPos.x, logicalPos.y);
-            this.draw();
+            this.templateLayer.pointerMove(logicalPos.x, logicalPos.y)
+            this.draw()
         } else if (this.viewState.dragging) {
             this.viewState.updateDrag(e.clientX, e.clientY)
             this.draw()
@@ -152,7 +150,7 @@ export default class PixelCanvas {
 
     handleMouseUpBound = (e: MouseEvent) => {
         if (e.button === 0) {
-            this.templateLayer.pointerUp();
+            this.templateLayer.pointerUp()
         } else if (e.button == 2)
             this.viewState.stopDrag()
     }

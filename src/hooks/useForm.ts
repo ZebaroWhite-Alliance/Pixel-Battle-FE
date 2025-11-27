@@ -1,4 +1,4 @@
-import {useCallback, useState, ChangeEvent} from "react";
+import {useCallback, useState, ChangeEvent} from "react"
 
 export default function useForm<T extends Record<string, any>>(initial: T) {
     const [values, setValues] = useState(initial)

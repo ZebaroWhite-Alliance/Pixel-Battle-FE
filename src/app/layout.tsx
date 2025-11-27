@@ -1,20 +1,20 @@
-import type {Metadata} from "next";
-import {Geist, Geist_Mono} from "next/font/google";
-import {ReactNode} from "react";
+import type {Metadata} from "next"
+import {Geist, Geist_Mono} from "next/font/google"
+import {ReactNode} from "react"
 
-import {ServicesProvider} from "@/context/ServicesContext";
+import {ServicesProvider} from "@/context/ServicesContext"
 
-import "./globals.css";
+import "./globals.css"
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
-});
+})
 
 const geistMono = Geist_Mono({
     variable: "--font-geist-mono",
     subsets: ["latin"],
-});
+})
 
 export const metadata: Metadata = {
     title: "Pixel Battle 🎨",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
         locale: "en_US",
         type: "website",
     },
-};
+}
 
 export default function RootLayout({children,}: Readonly<{ children: ReactNode; }>) {
     return (
@@ -45,5 +45,5 @@ export default function RootLayout({children,}: Readonly<{ children: ReactNode; 
         </ServicesProvider>
         </body>
         </html>
-    );
+    )
 }

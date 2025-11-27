@@ -1,8 +1,10 @@
 import { dirname } from "path"
 import { fileURLToPath } from "url"
+
 import { FlatCompat } from "@eslint/eslintrc"
-import tseslint from "typescript-eslint"
 import nextPlugin from "@next/eslint-plugin-next"
+import importPlugin from "eslint-plugin-import"
+import tseslint from "typescript-eslint"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -37,6 +39,7 @@ const config = [
         plugins: {
             "@typescript-eslint": tseslint.plugin,
             "@next/next": nextPlugin,
+            "import": importPlugin,
         },
 
         rules: {
@@ -44,9 +47,23 @@ const config = [
             "@typescript-eslint/ban-ts-comment": "off",
             "react/react-in-jsx-scope": "off",
             "react/jsx-uses-react": "off",
-            // "no-console": "warn",
-            // "no-unused-vars": "warn",
             "@next/next/no-html-link-for-pages": "off",
+
+            "semi": ["error", "never"],
+
+            "padding-line-between-statements": [
+                "error",
+                { blankLine: "always", prev: "*", next: ["function", "class"] }
+            ],
+
+            "import/order": [
+                "error",
+                {
+                    groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
+                    "newlines-between": "always",
+                    alphabetize: { order: "asc", caseInsensitive: true },
+                }
+            ],
         },
     },
 ]

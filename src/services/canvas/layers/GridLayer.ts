@@ -1,4 +1,4 @@
-import Layer from "@/services/canvas/layers/Layer";
+import Layer from "@/services/canvas/layers/Layer"
 
 export default class GridLayer extends Layer {
     GRID_MIN_SCALE = 8
@@ -6,8 +6,8 @@ export default class GridLayer extends Layer {
     renderTo(ctx: CanvasRenderingContext2D) {
         if (!this.visible) return
 
-        const transform = ctx.getTransform();
-        const scale = transform.a;
+        const transform = ctx.getTransform()
+        const scale = transform.a
         if (scale < this.GRID_MIN_SCALE) return
 
         const offset = 0.5 / scale

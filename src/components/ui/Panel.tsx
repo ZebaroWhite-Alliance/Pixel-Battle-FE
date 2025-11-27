@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
@@ -21,5 +21,5 @@ export default function Panel({children, className = '', style, ...props}: Panel
         >
             {children}
         </div>
-    );
+    )
 }

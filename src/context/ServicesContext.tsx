@@ -1,18 +1,19 @@
 "use client"
-import React, {createContext, useContext, useEffect, useState} from 'react';
-import AppServices from '@/services/AppServices';
-import Panel from "@/components/ui/Panel";
-import Heading from "@/components/ui/Heading";
+import React, {createContext, useContext, useEffect, useState} from 'react'
 
-const ServicesContext = createContext<AppServices | null>(null);
+import Heading from "@/components/ui/Heading"
+import Panel from "@/components/ui/Panel"
+import AppServices from '@/services/AppServices'
+
+const ServicesContext = createContext<AppServices | null>(null)
 
 export function ServicesProvider({children}: { children: React.ReactNode }) {
-    const [services, setServices] = useState<AppServices | null>(null);
+    const [services, setServices] = useState<AppServices | null>(null)
 
     useEffect(() => {
-        const appServices = new AppServices();
-        setServices(appServices);
-    }, []);
+        const appServices = new AppServices()
+        setServices(appServices)
+    }, [])
 
     if (!services) {
         return (<div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -21,20 +22,20 @@ export function ServicesProvider({children}: { children: React.ReactNode }) {
 
                 <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
             </Panel>
-        </div>);
+        </div>)
     }
 
     return (
         <ServicesContext.Provider value={services}>
             {children}
         </ServicesContext.Provider>
-    );
+    )
 }
 
 export const useServices = () => {
-    const context = useContext(ServicesContext);
+    const context = useContext(ServicesContext)
     if (!context) {
-        throw new Error('useServices must be used within ServicesProvider');
+        throw new Error('useServices must be used within ServicesProvider')
     }
-    return context;
-};
+    return context
+}

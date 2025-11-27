@@ -1,5 +1,5 @@
-import Layer from "@/services/canvas/layers/Layer";
-import Pixel from "@/types/Pixel";
+import Layer from "@/services/canvas/layers/Layer"
+import Pixel from "@/types/Pixel"
 
 export default class PixelLayer extends Layer {
     private pixelsCache = new Set<string>()

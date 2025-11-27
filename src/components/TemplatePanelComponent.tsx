@@ -1,38 +1,39 @@
 "use client"
-import React, { useState } from "react";
-import Button from "@/components/ui/Button";
-import UploadTemplateModalComponent from "@/components/UploadTemplateModalComponent";
-import Heading from "@/components/ui/Heading";
-import Panel from "@/components/ui/Panel";
-import BackgroundPanel from "@/components/ui/BackgroundPanel";
-import Text from "@/components/ui/Text";
-import Select from "@/components/ui/Select";
-import Checkbox from "@/components/ui/Checkbox";
-import TemplateItem from "@/services/TemplateItem";
-import {useServices} from "@/context/ServicesContext";
-import useEmitter from "@/hooks/useEmitter";
+import React, { useState } from "react"
+
+import BackgroundPanel from "@/components/ui/BackgroundPanel"
+import Button from "@/components/ui/Button"
+import Checkbox from "@/components/ui/Checkbox"
+import Heading from "@/components/ui/Heading"
+import Panel from "@/components/ui/Panel"
+import Select from "@/components/ui/Select"
+import Text from "@/components/ui/Text"
+import UploadTemplateModalComponent from "@/components/UploadTemplateModalComponent"
+import {useServices} from "@/context/ServicesContext"
+import useEmitter from "@/hooks/useEmitter"
+import TemplateItem from "@/services/TemplateItem"
 
 export default function TemplatePanelComponent() {
     const {templateManager} = useServices()
-    useEmitter(templateManager.events, "change");
+    useEmitter(templateManager.events, "change")
 
-    const [mode, setMode] = useState<"own" | "team">("own");
-    const [modalOpen, setModalOpen] = useState(false);
+    const [mode, setMode] = useState<"own" | "team">("own")
+    const [modalOpen, setModalOpen] = useState(false)
 
     const handleToggle = (id: string, value: boolean) => {
         templateManager.toggleTemplate(id, value)
-    };
+    }
 
     const handleConfirmPlacement = () => {
         templateManager.confirmActiveTemplate()
-    };
+    }
 
     const handleAdd = (name: string, img: HTMLImageElement) => {
         templateManager.addImage(name, img)
-    };
+    }
 
     const renderTemplate = (t: TemplateItem) => {
-        const isAwaiting = t.hasImage();
+        const isAwaiting = t.hasImage()
 
         return (
             <Panel
@@ -59,8 +60,8 @@ export default function TemplatePanelComponent() {
                     />
                 )}
             </Panel>
-        );
-    };
+        )
+    }
 
     return (
         <>
@@ -94,5 +95,5 @@ export default function TemplatePanelComponent() {
                 onAdd={handleAdd}
             />
         </>
-    );
+    )
 }

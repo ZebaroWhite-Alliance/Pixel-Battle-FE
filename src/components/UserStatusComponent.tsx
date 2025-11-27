@@ -1,9 +1,10 @@
 'use client'
 import {useRouter} from 'next/navigation'
+
 import Button from '@/components/ui/Button'
-import Panel from "@/components/ui/Panel";
-import Heading from "@/components/ui/Heading";
-import {useServices} from "@/context/ServicesContext";
+import Heading from "@/components/ui/Heading"
+import Panel from "@/components/ui/Panel"
+import {useServices} from "@/context/ServicesContext"
 
 export default function UserStatusComponent() {
     const {session} = useServices()

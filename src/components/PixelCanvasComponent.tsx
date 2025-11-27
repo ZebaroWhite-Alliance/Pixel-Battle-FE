@@ -1,6 +1,7 @@
 "use client"
 import {useEffect, useRef} from "react"
-import {useServices} from "@/context/ServicesContext";
+
+import {useServices} from "@/context/ServicesContext"
 
 export default function PixelCanvasComponent() {
     const {pixelCanvas} = useServices()

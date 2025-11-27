@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import FormContainer from "@/components/ui/FormContainer";
-import Input from "@/components/ui/Input";
-import ErrorField from "@/components/ui/ErrorField";
-import Button from "@/components/ui/Button";
+import React, { useState } from "react"
+
+import Button from "@/components/ui/Button"
+import ErrorField from "@/components/ui/ErrorField"
+import FormContainer from "@/components/ui/FormContainer"
+import Input from "@/components/ui/Input"
 
 interface Props {
     open: boolean;
@@ -11,47 +12,47 @@ interface Props {
 }
 
 export default function UploadTemplateModalComponent({ open, onClose, onAdd }: Props) {
-    const [name, setName] = useState("");
-    const [file, setFile] = useState<File | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false);
+    const [name, setName] = useState("")
+    const [file, setFile] = useState<File | null>(null)
+    const [error, setError] = useState<string | null>(null)
+    const [loading, setLoading] = useState(false)
 
-    if (!open) return null;
+    if (!open) return null
 
     const submit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError(null);
+        e.preventDefault()
+        setError(null)
 
-        if (!name.trim()) return setError("You need to specify the name of the template");
-        if (!file) return setError("You need to select a template file");
-        if (!file.type.startsWith("image/")) return setError("The selected file is not an image");
+        if (!name.trim()) return setError("You need to specify the name of the template")
+        if (!file) return setError("You need to select a template file")
+        if (!file.type.startsWith("image/")) return setError("The selected file is not an image")
 
-        setLoading(true);
+        setLoading(true)
 
         try {
-            const img = await fileToImage(file);
-            onAdd(name.trim(), img);
-            setName("");
-            setFile(null);
-            onClose();
+            const img = await fileToImage(file)
+            onAdd(name.trim(), img)
+            setName("")
+            setFile(null)
+            onClose()
         } catch {
-            setError("Error loading image");
+            setError("Error loading image")
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    };
+    }
 
 
     function fileToImage(file: File): Promise<HTMLImageElement> {
         return new Promise((resolve, reject) => {
-            const img = new Image();
+            const img = new Image()
             img.onload = () => {
-                URL.revokeObjectURL(img.src);
-                resolve(img);
-            };
-            img.onerror = reject;
-            img.src = URL.createObjectURL(file);
-        });
+                URL.revokeObjectURL(img.src)
+                resolve(img)
+            }
+            img.onerror = reject
+            img.src = URL.createObjectURL(file)
+        })
     }
 
     return (
@@ -79,5 +80,5 @@ export default function UploadTemplateModalComponent({ open, onClose, onAdd }: P
                 </div>
             </FormContainer>
         </div>
-    );
+    )
 }

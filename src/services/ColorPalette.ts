@@ -1,4 +1,4 @@
-import EventEmitter from "@/utils/EventEmitter";
+import EventEmitter from "@/utils/EventEmitter"
 
 export default class ColorPalette {
     static COLOR_PALETTE = [
@@ -12,7 +12,7 @@ export default class ColorPalette {
     private selectedIndex: number
     public events = new EventEmitter<{
         change: void
-    }>();
+    }>()
 
     constructor(colors = ColorPalette.COLOR_PALETTE, defaultIndex = 0) {
         this.colors = colors

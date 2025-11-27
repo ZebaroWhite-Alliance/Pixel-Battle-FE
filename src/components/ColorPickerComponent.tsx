@@ -1,14 +1,14 @@
 "use client"
-import Panel from "@/components/ui/Panel";
-import BackgroundPanel from "@/components/ui/BackgroundPanel";
-import Heading from "@/components/ui/Heading";
-import Button from "@/components/ui/Button";
-import {useServices} from "@/context/ServicesContext";
-import useEmitter from "@/hooks/useEmitter";
+import BackgroundPanel from "@/components/ui/BackgroundPanel"
+import Button from "@/components/ui/Button"
+import Heading from "@/components/ui/Heading"
+import Panel from "@/components/ui/Panel"
+import {useServices} from "@/context/ServicesContext"
+import useEmitter from "@/hooks/useEmitter"
 
 export default function ColorPickerComponent() {
     const {colorPalette} = useServices()
-    useEmitter(colorPalette.events, "change");
+    useEmitter(colorPalette.events, "change")
 
     const colors = colorPalette.getAllColors()
     const selectedIndex = colorPalette.getSelectedIndex()

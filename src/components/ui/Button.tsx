@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     loading?: boolean;
@@ -18,5 +18,5 @@ export default function Button({children, loading, color, className = '', ...pro
         >
             {loading ? 'Loading...' : children}
         </button>
-    );
+    )
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -16,7 +16,7 @@ export default function Checkbox({
                                      disabled,
                                      ...props
                                  }: CheckboxProps) {
-    const finalDisabled = disabled || loading;
+    const finalDisabled = disabled || loading
 
     return (
         <label className="flex items-center gap-2 select-none cursor-pointer">
@@ -61,5 +61,5 @@ export default function Checkbox({
 
             {label && <span className={`${finalDisabled ? "opacity-50" : ""}`}>{label}</span>}
         </label>
-    );
+    )
 }

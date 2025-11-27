@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 type BackgroundPanelProps = React.HTMLAttributes<HTMLDivElement>
 
@@ -17,5 +17,5 @@ export default function BackgroundPanel({className = '', children, ...props}: Ba
         >
             {children}
         </div>
-    );
+    )
 }

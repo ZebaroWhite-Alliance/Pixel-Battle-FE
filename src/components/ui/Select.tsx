@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef, useEffect} from "react"
 
 interface Option<T = string> {
     label: string;
@@ -13,21 +13,21 @@ interface SelectProps<T = string> {
 }
 
 export default function NiceSelect<T = string>({value, options, onChange, className = ""}: SelectProps<T>) {
-    const [open, setOpen] = useState(false);
-    const ref = useRef<HTMLDivElement>(null);
+    const [open, setOpen] = useState(false)
+    const ref = useRef<HTMLDivElement>(null)
 
     const handleClickOutside = (e: MouseEvent) => {
         if (ref.current && !ref.current.contains(e.target as Node)) {
-            setOpen(false);
+            setOpen(false)
         }
-    };
+    }
 
     useEffect(() => {
-        document.addEventListener("click", handleClickOutside);
-        return () => document.removeEventListener("click", handleClickOutside);
-    }, []);
+        document.addEventListener("click", handleClickOutside)
+        return () => document.removeEventListener("click", handleClickOutside)
+    }, [])
 
-    const selected = options.find(opt => opt.value === value);
+    const selected = options.find(opt => opt.value === value)
 
     return (
         <div className={`relative ${className}`} ref={ref}>
@@ -46,8 +46,8 @@ export default function NiceSelect<T = string>({value, options, onChange, classN
                         <li
                             key={String(opt.value)}
                             onClick={() => {
-                                onChange(opt.value);
-                                setOpen(false);
+                                onChange(opt.value)
+                                setOpen(false)
                             }}
                             className={`px-3 py-2 cursor-pointer hover:bg-blue-100 ${opt.value === value ? "bg-blue-50 font-semibold" : ""}`}
                         >
@@ -57,5 +57,5 @@ export default function NiceSelect<T = string>({value, options, onChange, classN
                 </ul>
             )}
         </div>
-    );
+    )
 }

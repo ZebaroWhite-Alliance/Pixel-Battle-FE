@@ -1,5 +1,5 @@
-import TemplateItem from "@/services/TemplateItem";
-import Pixel from "@/types/Pixel";
+import TemplateItem from "@/services/TemplateItem"
+import Pixel from "@/types/Pixel"
 
 export default class ApiClient {
     static API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://pixel-battle.zebaro.dev/api/v1'

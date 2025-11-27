@@ -1,37 +1,37 @@
-import ApiClient from "@/services/ApiClient";
-import WebSocket from "@/services/WebSocket";
-import ColorPalette from "@/services/ColorPalette";
-import TemplateManager from "@/services/TemplateManager";
-import PixelCanvas from "@/services/canvas/PixelCanvas";
-import Session from "@/services/Session";
+import ApiClient from "@/services/ApiClient"
+import PixelCanvas from "@/services/canvas/PixelCanvas"
+import ColorPalette from "@/services/ColorPalette"
+import Session from "@/services/Session"
+import TemplateManager from "@/services/TemplateManager"
+import WebSocket from "@/services/WebSocket"
 
 export default class AppServices {
-    apiClient: ApiClient;
-    webSocketPixels: WebSocket;
+    apiClient: ApiClient
+    webSocketPixels: WebSocket
 
-    session: Session;
+    session: Session
 
-    colorPalette: ColorPalette;
-    templateManager: TemplateManager;
+    colorPalette: ColorPalette
+    templateManager: TemplateManager
 
-    pixelCanvas: PixelCanvas;
+    pixelCanvas: PixelCanvas
 
-    private unsubscribers: (() => void)[] = [];
+    private unsubscribers: (() => void)[] = []
 
     constructor() {
-        this.apiClient = new ApiClient();
-        this.webSocketPixels = new WebSocket('/topic/pixels');
+        this.apiClient = new ApiClient()
+        this.webSocketPixels = new WebSocket('/topic/pixels')
 
-        this.session = new Session(this.apiClient);
+        this.session = new Session(this.apiClient)
 
-        this.colorPalette = new ColorPalette();
-        this.templateManager = new TemplateManager();
+        this.colorPalette = new ColorPalette()
+        this.templateManager = new TemplateManager()
 
         this.pixelCanvas = new PixelCanvas({
             width: 1000,
             height: 1000,
             templateManager: this.templateManager,
-        });
+        })
 
         this.init()
 
@@ -45,7 +45,7 @@ export default class AppServices {
         this.apiClient.fetchPixels().then(pixels => this.pixelCanvas.drawPixels(pixels))
 
         this.webSocketPixels.connect((data) => {
-            const {x, y, color} = data;
+            const {x, y, color} = data
             this.pixelCanvas.drawPixel(x, y, color)
         })
     }
@@ -79,7 +79,7 @@ export default class AppServices {
     }
 
     unsubAll() {
-        this.unsubscribers.forEach(unsub => unsub());
-        this.unsubscribers = [];
+        this.unsubscribers.forEach(unsub => unsub())
+        this.unsubscribers = []
     }
 }
