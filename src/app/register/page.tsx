@@ -9,7 +9,7 @@ import useForm from "@/hooks/useForm";
 import {useServices} from "@/context/ServicesContext";
 
 export default function RegistrationPage() {
-    const {apiClient} = useServices()
+    const {session} = useServices()
     const router = useRouter()
 
     const {values: regData, handleChange} = useForm({username: '', password: '', confirmPassword: ''})
@@ -29,12 +29,12 @@ export default function RegistrationPage() {
         }
 
         try {
-            await apiClient.register(regData.username, regData.password)
+            await session.register(regData.username, regData.password)
             router.push('/login')
         } catch (err: any) {
             setErrorMessage(err.message || 'Unknown error')
         }
-    }, [apiClient, regData, router])
+    }, [session, regData, router])
 
     return (
         <FormContainer title="Create Account" onSubmit={handleRegister}>

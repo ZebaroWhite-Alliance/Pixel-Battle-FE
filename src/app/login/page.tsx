@@ -10,7 +10,7 @@ import {useServices} from "@/context/ServicesContext";
 
 
 export default function LoginPage() {
-    const {apiClient} = useServices()
+    const {session} = useServices()
     const router = useRouter()
 
     const {values: loginData, handleChange} = useForm({username: '', password: ''})
@@ -24,13 +24,13 @@ export default function LoginPage() {
     const handleLogin = useCallback(async (e: FormEvent) => {
         e.preventDefault()
         try {
-            await apiClient.login(loginData.username, loginData.password)
+            await session.login(loginData.username, loginData.password)
             router.push('/')
         } catch (err: any) {
             setAuthError(err.message || 'Unknown error')
         }
 
-    }, [apiClient, loginData, router])
+    }, [session, loginData, router])
 
     return (
         <FormContainer title="Welcome Back" onSubmit={handleLogin}>
