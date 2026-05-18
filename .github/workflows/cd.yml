@@ -74,7 +74,7 @@ jobs:
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
           source: "docker-compose.yml,proxy"
           target: /srv/pixel-battle/
           strip_components: 0
@@ -84,7 +84,7 @@ jobs:
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /srv/pixel-battle
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
